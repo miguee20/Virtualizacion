@@ -19,4 +19,4 @@ IP address of the virtual server (bridge adapter)
 
 Successful response of the packages, from the virtual server to the host machine
 
-![Ping Test Success](./img/ping3.png)
+![Ping Test Success](./img/ping.png)
