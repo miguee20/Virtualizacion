@@ -60,6 +60,6 @@ VM configured in **Bridge Mode** with a static IP within the hypervisor's subnet
 VM configured in **Bridge Mode** with a static IP outside the hypervisor's subnet (`10.10.10.0/24`):
 
 - **Assigned IP:** `10.10.10.50/24`
-- **Connectivity:** `ping -4 -c 4 google.com` failed with `Network is unreachable` as the IP cannot reach the default gateway.
+- **Connectivity:** `ping -4 -c 4 google.com` failed with `Destination Host Unreachable` (100% packet loss) as the IP cannot reach the default gateway.
 
 ![Static IP - Outside Subnet](./screenshots/static_outside_subnet.png)
