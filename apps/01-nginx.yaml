@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html
+  namespace: parcial-mass
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="es">
+    <head><meta charset="UTF-8"><title>App 1 - Nginx</title></head>
+    <body style="font-family:sans-serif;background:#009639;color:#fff;text-align:center;padding-top:15vh">
+      <h1>App 1 &mdash; Nginx</h1>
+      <p>Dominio: <b>nginx.mass.test</b></p>
+      <p>Namespace: <b>parcial-mass</b></p>
+      <p>Servido a través de Traefik + MetalLB</p>
+      <p>Miguel Antonio Salguero Sandoval</p>
+    </body>
+    </html>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: parcial-mass
+  labels:
+    app: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+          resources:
+            limits:
+              cpu: 100m
+              memory: 64Mi
+      volumes:
+        - name: html
+          configMap:
+            name: nginx-html
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: parcial-mass
+spec:
+  type: ClusterIP
+  selector:
+    app: nginx
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
