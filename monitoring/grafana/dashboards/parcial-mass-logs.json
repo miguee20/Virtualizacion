@@ -1,0 +1,56 @@
+{
+  "uid": "parcial-mass-logs",
+  "title": "parcial-mass Application Logs (Loki)",
+  "tags": ["loki", "logs", "mass"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "10s",
+  "time": { "from": "now-1h", "to": "now" },
+  "panels": [
+    {
+      "id": 1, "type": "timeseries", "title": "Log lines per minute by app (parcial-mass + traefik)",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 0 },
+      "datasource": { "type": "loki", "uid": "loki" },
+      "fieldConfig": { "defaults": { "custom": { "drawStyle": "bars", "fillOpacity": 60, "stacking": { "mode": "normal" } } }, "overrides": [] },
+      "targets": [
+        { "refId": "A", "legendFormat": "{{app}}", "expr": "sum by (app) (count_over_time({namespace=~\"parcial-mass|traefik\"}[1m]))" }
+      ]
+    },
+    {
+      "id": 2, "type": "logs", "title": "nginx logs",
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 8 },
+      "datasource": { "type": "loki", "uid": "loki" },
+      "options": { "showTime": true, "wrapLogMessage": true, "sortOrder": "Descending", "enableLogDetails": true },
+      "targets": [ { "refId": "A", "expr": "{namespace=\"parcial-mass\", app=\"nginx\"}" } ]
+    },
+    {
+      "id": 3, "type": "logs", "title": "apache logs",
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 8 },
+      "datasource": { "type": "loki", "uid": "loki" },
+      "options": { "showTime": true, "wrapLogMessage": true, "sortOrder": "Descending", "enableLogDetails": true },
+      "targets": [ { "refId": "A", "expr": "{namespace=\"parcial-mass\", app=\"apache\"}" } ]
+    },
+    {
+      "id": 4, "type": "logs", "title": "whoami logs",
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 18 },
+      "datasource": { "type": "loki", "uid": "loki" },
+      "options": { "showTime": true, "wrapLogMessage": true, "sortOrder": "Descending", "enableLogDetails": true },
+      "targets": [ { "refId": "A", "expr": "{namespace=\"parcial-mass\", app=\"whoami\"}" } ]
+    },
+    {
+      "id": 5, "type": "logs", "title": "echo logs",
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 18 },
+      "datasource": { "type": "loki", "uid": "loki" },
+      "options": { "showTime": true, "wrapLogMessage": true, "sortOrder": "Descending", "enableLogDetails": true },
+      "targets": [ { "refId": "A", "expr": "{namespace=\"parcial-mass\", app=\"echo\"}" } ]
+    },
+    {
+      "id": 6, "type": "logs", "title": "Traefik logs (access log)",
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 28 },
+      "datasource": { "type": "loki", "uid": "loki" },
+      "options": { "showTime": true, "wrapLogMessage": true, "sortOrder": "Descending", "enableLogDetails": true },
+      "targets": [ { "refId": "A", "expr": "{namespace=\"traefik\"}" } ]
+    }
+  ]
+}
